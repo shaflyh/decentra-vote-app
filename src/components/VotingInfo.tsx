@@ -1,4 +1,4 @@
-import { VotingStats } from "../hooks/useVoting";
+import { VotingStats } from "../types/proposal";
 
 interface VotingInfoProps {
   topic: string;

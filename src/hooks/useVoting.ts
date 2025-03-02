@@ -3,25 +3,10 @@ import { useReadContract, useWatchContractEvent } from "wagmi";
 import { decodeBytes32String } from "ethers";
 
 import contract from "../contract/DecentraVote.json";
+import { Proposal, TimeLeft, VotingStats } from "../types/proposal";
 
 const DecentraVoteABI = contract.abi;
 const CONTRACT_ADDRESS = "0x4748a49AEaFCe1c5Ead917C4b2979B048FAE8E38";
-
-export type Proposal = {
-  name: string;
-  voteCount: number;
-};
-
-export type VotingStats = [bigint, bigint, boolean] & {
-  totalVotes: bigint;
-  registeredVoters: bigint;
-  votingActive: boolean;
-};
-
-export type TimeLeft = {
-  start: string;
-  end: string;
-};
 
 export function useVoting() {
   const [_refreshKey, setRefreshKey] = useState(0);

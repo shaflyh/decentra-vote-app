@@ -10,6 +10,7 @@ import VotingInfo from "./components/VotingInfo";
 import ProposalList from "./components/ProposalList";
 import AdminControls from "./components/AdminControls";
 import UserStatus from "./components/UseStatus";
+import VoteStatusInfo from "./components/VoteStatusInfo";
 
 export default function App() {
   const { isConnected } = useAccount();
@@ -35,10 +36,12 @@ export default function App() {
       <ToastContainer position="top-right" autoClose={5000} />
 
       <div className="w-full p-8 text-center bg-white rounded-lg shadow-xl">
-        <h1 className="text-4xl font-bold text-center">Decentra Vote</h1>
+        <h1 className="mb-1 text-4xl font-bold text-center">{topic}</h1>
+        <div className="mb-4 text-gray-400">DecentraVote by Muhammad Shafly Hamzah</div>
         <div className="flex items-center justify-center w-full">
           <ConnectButton showBalance={false} />
         </div>
+        <VoteStatusInfo proposals={proposals} />
         {isConnected ? (
           <div className="grid grid-cols-1 gap-8 mt-8 lg:grid-cols-2">
             <div className="flex flex-col gap-6 p-6 rounded-lg shadow bg-gray-50">
