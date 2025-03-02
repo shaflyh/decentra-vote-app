@@ -19,7 +19,7 @@ export default function VotingInfo({
 }: VotingInfoProps) {
   return (
     <div className="p-4 mb-8 rounded-lg bg-gray-50">
-      <h2 className="mb-2 text-xl font-semibold text-indigo-600">Voting Information</h2>
+      <h2 className="mb-2 text-xl font-semibold">Voting Information</h2>
       <p className="mb-1">
         <span className="font-medium">Topic:</span>{" "}
         {isTopicLoading ? "Loading..." : topic || "Error fetching topic"}

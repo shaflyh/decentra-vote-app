@@ -20,8 +20,8 @@ export default function AdminControls({
   handleAddProposal,
 }: AdminControlsProps) {
   return (
-    <div className="p-4 mb-8 border border-indigo-200 rounded-lg bg-indigo-50">
-      <h2 className="mb-4 text-xl font-semibold text-indigo-700">Admin Controls</h2>
+    <div className="p-4 mb-8 border border-blue-200 rounded-lg bg-blue-50">
+      <h2 className="mb-4 text-xl font-semibold">Admin Controls</h2>
 
       <div className="mb-4">
         <h3 className="mb-2 font-medium">Register Voter</h3>
@@ -36,7 +36,7 @@ export default function AdminControls({
           <button
             onClick={handleRegisterVoter}
             disabled={writeLoading}
-            className="px-4 py-2 text-white bg-indigo-600 rounded hover:bg-indigo-700 disabled:bg-indigo-300"
+            className="px-4 py-2 text-white bg-blue-600 rounded hover:bg-blue-700 disabled:bg-blue-300"
           >
             {writeLoading ? "Registering..." : "Register"}
           </button>
@@ -56,7 +56,7 @@ export default function AdminControls({
           <button
             onClick={handleAddProposal}
             disabled={writeLoading || Boolean(votingActive)}
-            className="px-4 py-2 text-white bg-indigo-600 rounded hover:bg-indigo-700 disabled:bg-indigo-300"
+            className="px-4 py-2 text-white bg-blue-600 rounded hover:bg-blue-700 disabled:bg-blue-300"
           >
             {writeLoading ? "Adding..." : "Add Proposal"}
           </button>

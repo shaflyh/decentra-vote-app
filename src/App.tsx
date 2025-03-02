@@ -35,9 +35,9 @@ export default function App() {
       <ToastContainer position="top-right" autoClose={5000} />
 
       <div className="w-full p-8 text-center bg-white rounded-lg shadow-xl">
-        <h1 className="text-4xl font-bold text-center text-indigo-700">DecentraVote</h1>
+        <h1 className="text-4xl font-bold text-center">DecentraVote</h1>
         <div className="flex items-center justify-center w-full">
-          <ConnectButton />
+          <ConnectButton showBalance={false} />
         </div>
         {isConnected ? (
           <div className="grid grid-cols-1 gap-8 mt-8 lg:grid-cols-2">

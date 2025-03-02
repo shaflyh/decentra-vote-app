@@ -22,7 +22,7 @@ export default function ProposalList({
 }: ProposalListProps) {
   return (
     <div className="mb-8">
-      <h2 className="mb-4 text-xl font-semibold text-indigo-600">Proposals</h2>
+      <h2 className="mb-4 text-xl font-semibold">Proposals</h2>
       {proposals && proposals.length > 0 ? (
         <div className="grid gap-4">
           {proposals.map((proposal, index) => (
@@ -42,7 +42,7 @@ export default function ProposalList({
                     <button
                       onClick={() => handleVote(index)}
                       disabled={false}
-                      className="px-4 py-2 text-white bg-indigo-600 rounded hover:bg-indigo-700 disabled:bg-indigo-300"
+                      className="px-4 py-2 text-white bg-blue-600 rounded hover:bg-blue-700 disabled:bg-blue-300"
                     >
                       Vote
                     </button>

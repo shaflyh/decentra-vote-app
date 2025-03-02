@@ -3,8 +3,8 @@
 @tailwind components;
 
 :root {
-  --primary-color: #646cff;
-  --primary-hover: #535bf2;
+  --primary-color: #4284f3;
+  --primary-hover: #33a852;
   --background: #ffffff;
   --text: #213547;
   --button-bg: #f9f9f9;
@@ -18,6 +18,12 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+@layer base {
+  h1, h2, h3, h4, h5, h6 {
+    @apply text-blue-600;
+  }
 }
 
 /* Global Styles */

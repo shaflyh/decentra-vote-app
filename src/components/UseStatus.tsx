@@ -19,7 +19,7 @@ export default function UserStatus({
 }: UserStatusProps) {
   return (
     <div className="p-4 mb-4 rounded-lg bg-gray-50">
-      <h2 className="mb-2 text-xl font-semibold text-indigo-600">Your Status</h2>
+      <h2 className="mb-2 text-xl font-semibold">Your Status</h2>
       <p className="mb-1">
         <span className="font-medium">Role:</span> {isAdmin ? "Admin" : "Voter"}
       </p>
