@@ -20,5 +20,10 @@ gcloud run deploy decentra-vote-app \
     --allow-unauthenticated
 ```
 
+# Deploy using Google Cloud Build
+```sh
+gcloud builds submit --config cloudbuild.yaml .
+```
+
 ### References
 * [Docker's Node.js guide](https://docs.docker.com/language/nodejs/)
