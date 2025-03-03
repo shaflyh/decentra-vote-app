@@ -1,4 +1,4 @@
 import contract from "../contract/DecentraVote.json";
 
 export const DecentraVoteABI = contract.abi;
-export const CONTRACT_ADDRESS = "0x4748a49AEaFCe1c5Ead917C4b2979B048FAE8E38";
+export const CONTRACT_ADDRESS = "0x817F302F698c537fEd51DCA36D4322c5712A3482";

@@ -3,10 +3,7 @@ import { useWriteContract, useTransaction } from "wagmi";
 import { encodeBytes32String } from "ethers";
 import { toast } from "react-toastify";
 
-import contract from "../contract/DecentraVote.json";
-
-const DecentraVoteABI = contract.abi;
-const CONTRACT_ADDRESS = "0x4748a49AEaFCe1c5Ead917C4b2979B048FAE8E38";
+import { DecentraVoteABI, CONTRACT_ADDRESS } from "../config/constants";
 
 export function useVotingActions(onSuccess: () => void) {
   const [newVoterAddress, setNewVoterAddress] = useState("");
