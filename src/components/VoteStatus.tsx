@@ -6,7 +6,8 @@ interface VoteStatusProps {
 
 export default function VoteStatus({ proposals }: VoteStatusProps) {
   return (
-    <div className="mt-8 mb-8">
+    <div className="mb-8">
+      <h1 className="text-2xl font-bold">Vote Status</h1>
       {proposals && proposals.length > 0 ? (
         <div className="grid gap-4">
           {proposals.map((proposal, index) => (
@@ -15,7 +16,7 @@ export default function VoteStatus({ proposals }: VoteStatusProps) {
                 <div>
                   <h3 className="font-medium">{proposal.name}</h3>
                 </div>
-                <p>Votes: {proposal.voteCount}</p>
+                <p>Total Votes: {proposal.voteCount}</p>
               </div>
             </div>
           ))}

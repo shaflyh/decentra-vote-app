@@ -44,7 +44,23 @@ export default function App() {
         <VerifyVoter></VerifyVoter>
         <div className="flex justify-between w-full gap-x-4">
           <div className="flex-1">
-            <VoteStatus proposals={proposals} />
+            <div className="max-w-3xl p-6 mx-auto my-8 bg-white border border-blue-100 shadow-md rounded-xl">
+              <VoteStatus proposals={proposals} />
+              {isConnected && votingActions.proof.length > 0 && (
+                <div className="gap-8 mt-8 lg:grid-cols-2">
+                  <div className="">
+                    {isAdmin && <AdminControls votingActive={votingActive} {...votingActions} />}
+                    <ProposalList
+                      proposals={proposals}
+                      hasVoted={hasVoted}
+                      votingActive={votingActive}
+                      votedFor={votedFor}
+                      handleVote={votingActions.handleVote}
+                    />
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
           <div className="flex-1">
             <VotingInfo
@@ -57,20 +73,6 @@ export default function App() {
             />
           </div>
         </div>
-        {isConnected && (
-          <div className="grid grid-cols-1 gap-8 mt-8 lg:grid-cols-2">
-            <div className="flex flex-col gap-6 p-6 rounded-lg shadow bg-gray-50">
-              {isAdmin && <AdminControls votingActive={votingActive} {...votingActions} />}
-              <ProposalList
-                proposals={proposals}
-                hasVoted={hasVoted}
-                votingActive={votingActive}
-                votedFor={votedFor}
-                handleVote={votingActions.handleVote}
-              />
-            </div>
-          </div>
-        )}
       </div>
     </div>
   );

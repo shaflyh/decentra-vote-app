@@ -1,14 +1,19 @@
 import { useState, useEffect } from "react";
-import { useWriteContract, useTransaction } from "wagmi";
+import { useWriteContract, useTransaction, useAccount } from "wagmi";
 import { encodeBytes32String } from "ethers";
 import { toast } from "react-toastify";
 
-import { DecentraVoteABI, CONTRACT_ADDRESS } from "../config/constants";
+import { DecentraVoteABI, CONTRACT_ADDRESS, merkleDataProofs } from "../config/constants";
 
 export function useVotingActions(onSuccess: () => void) {
+  const { address } = useAccount();
+
   const [newVoterAddress, setNewVoterAddress] = useState("");
   const [newProposalName, setNewProposalName] = useState("");
   const [selectedProposal, setSelectedProposal] = useState(0);
+
+  const lowerCaseAddress = address?.toLowerCase();
+  const proof: string[] = merkleDataProofs[lowerCaseAddress || ""] ?? [];
 
   // Contract write state
   const { writeContract, isPending: writeLoading, data: writeData } = useWriteContract();
@@ -54,12 +59,13 @@ export function useVotingActions(onSuccess: () => void) {
 
   // Handle vote
   const handleVote = (proposalIndex: number) => {
+    console.log("Send the vote");
     setSelectedProposal(proposalIndex);
     writeContract({
       address: CONTRACT_ADDRESS,
       abi: DecentraVoteABI,
       functionName: "castVote",
-      args: [BigInt(proposalIndex)],
+      args: [BigInt(proposalIndex), proof],
     });
   };
 
@@ -73,5 +79,6 @@ export function useVotingActions(onSuccess: () => void) {
     handleRegisterVoter,
     handleAddProposal,
     handleVote,
+    proof,
   };
 }

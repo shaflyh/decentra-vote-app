@@ -20,3 +20,10 @@ export type VoterInfo = [boolean, bigint] & {
   hasVoted: boolean;
   voteIndex: bigint;
 };
+
+export interface MerkleData {
+  root: string;
+  addresses: string[];
+  totalAddresses: number;
+  proofs: Record<string, string[]>;
+}

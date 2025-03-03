@@ -2,17 +2,8 @@ import { useEffect, useState } from "react";
 import { useAccount } from "wagmi";
 import { toast } from "react-toastify";
 
-import merkleData from "../config/merkle-data.json";
 import { verifyProof } from "../utils/merkleTree";
-
-interface MerkleData {
-  root: string;
-  addresses: string[];
-  totalAddresses: number;
-  proofs: Record<string, string[]>;
-}
-
-const data: MerkleData = merkleData;
+import { merkleDataProofs, merkleDataRoot } from "../config/constants";
 
 export default function VerifyVoter() {
   const { address, isConnected } = useAccount();
@@ -25,10 +16,10 @@ export default function VerifyVoter() {
     }
 
     const lowerCaseAddress = address.toLowerCase();
-    const proof: string[] = data.proofs[lowerCaseAddress] ?? [];
+    const proof: string[] = merkleDataProofs[lowerCaseAddress] ?? [];
 
     if (proof.length > 0) {
-      const isValid = verifyProof(merkleData.root, lowerCaseAddress, proof);
+      const isValid = verifyProof(merkleDataRoot, lowerCaseAddress, proof);
       setIsVerified(isValid);
 
       if (isValid) {
@@ -47,7 +38,7 @@ export default function VerifyVoter() {
   }, [address, isConnected]);
 
   return (
-    <div className="p-4 mt-4 mb-12 text-center bg-white rounded-lg shadow">
+    <div className="p-4 mt-4 text-center bg-white rounded-lg shadow">
       {isConnected ? (
         isVerified === null ? (
           <p>🔄 Verifying your wallet...</p>
