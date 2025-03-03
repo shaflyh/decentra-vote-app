@@ -14,8 +14,8 @@ export default function VoteStatusInfo({ proposals }: VoteStatusInfoProps) {
               <div className="flex items-center justify-between">
                 <div>
                   <h3 className="font-medium">{proposal.name}</h3>
-                  <p>Votes: {proposal.voteCount}</p>
                 </div>
+                <p>Votes: {proposal.voteCount}</p>
               </div>
             </div>
           ))}

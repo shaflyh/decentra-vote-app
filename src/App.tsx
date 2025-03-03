@@ -11,6 +11,7 @@ import ProposalList from "./components/ProposalList";
 import AdminControls from "./components/AdminControls";
 import UserStatus from "./components/UseStatus";
 import VoteStatusInfo from "./components/VoteStatusInfo";
+import VerifyVoter from "./components/VerifyVoter";
 
 export default function App() {
   const { isConnected } = useAccount();
@@ -41,8 +42,9 @@ export default function App() {
         <div className="flex items-center justify-center w-full">
           <ConnectButton showBalance={false} />
         </div>
+        <VerifyVoter></VerifyVoter>
         <VoteStatusInfo proposals={proposals} />
-        {isConnected ? (
+        {isConnected && (
           <div className="grid grid-cols-1 gap-8 mt-8 lg:grid-cols-2">
             <div className="flex flex-col gap-6 p-6 rounded-lg shadow bg-gray-50">
               <VotingInfo
@@ -73,13 +75,14 @@ export default function App() {
               />
             </div>
           </div>
-        ) : (
+        )}
+        {/* (
           <div className="flex flex-col items-center justify-center py-10 text-center">
             <p className="mb-4 text-lg">
               Please connect your wallet to interact with the DecentraVote contract
             </p>
           </div>
-        )}
+        ) */}
       </div>
     </div>
   );

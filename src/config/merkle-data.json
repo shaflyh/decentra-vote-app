@@ -1,0 +1,16 @@
+{
+  "root": "0x3c6d217ed3c4a6f05f74f82864866c9d619e7f043f45a54ef7f553006de0864a",
+  "addresses": [
+    "0xa9e0c87d1697f8ff2ae805919167fa5f5066c2f8",
+    "0x8c7233661d94ad9dc5bed164baddb027f035e558"
+  ],
+  "totalAddresses": 2,
+  "proofs": {
+    "0xa9e0c87d1697f8ff2ae805919167fa5f5066c2f8": [
+      "0x8d26019d34b4a80c52caf8b4589e02694c6c02ccb2988e341a5a2c4d4151b810"
+    ],
+    "0x8c7233661d94ad9dc5bed164baddb027f035e558": [
+      "0xa92b03d201c31bb8e6479f8e123a9f14fa3f72a61eec1c67ab4584c9d5327907"
+    ]
+  }
+}
