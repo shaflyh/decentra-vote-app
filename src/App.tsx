@@ -9,7 +9,7 @@ import { useVotingActions } from "./hooks/useVotingActions";
 import VotingInfo from "./components/VotingInfo";
 import ProposalList from "./components/ProposalList";
 import AdminControls from "./components/AdminControls";
-import VoteStatusInfo from "./components/VoteStatusInfo";
+import VoteStatus from "./components/VoteStatus";
 import VerifyVoter from "./components/VerifyVoter";
 
 export default function App() {
@@ -44,7 +44,7 @@ export default function App() {
         <VerifyVoter></VerifyVoter>
         <div className="flex justify-between w-full gap-x-4">
           <div className="flex-1">
-            <VoteStatusInfo proposals={proposals} />
+            <VoteStatus proposals={proposals} />
           </div>
           <div className="flex-1">
             <VotingInfo

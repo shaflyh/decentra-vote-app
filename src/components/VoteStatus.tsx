@@ -1,10 +1,10 @@
 import { Proposal } from "../types/proposal";
 
-interface VoteStatusInfoProps {
+interface VoteStatusProps {
   proposals: Proposal[];
 }
 
-export default function VoteStatusInfo({ proposals }: VoteStatusInfoProps) {
+export default function VoteStatus({ proposals }: VoteStatusProps) {
   return (
     <div className="mt-8 mb-8">
       {proposals && proposals.length > 0 ? (
