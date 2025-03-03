@@ -9,7 +9,14 @@ export type VotingStats = [bigint, bigint, boolean] & {
   votingActive: boolean;
 };
 
-export type TimeLeft = {
+export type VotingTime = {
   start: string;
   end: string;
+  untilStart: string;
+  untilEnd: string;
+};
+
+export type VoterInfo = [boolean, bigint] & {
+  hasVoted: boolean;
+  voteIndex: bigint;
 };

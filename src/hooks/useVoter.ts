@@ -1,12 +1,7 @@
 import { useAccount, useReadContract } from "wagmi";
 
 import { DecentraVoteABI, CONTRACT_ADDRESS } from "../config/constants";
-
-export type VoterInfo = [boolean, boolean, bigint] & {
-  isRegistered: boolean;
-  hasVoted: boolean;
-  voteIndex: bigint;
-};
+import { VoterInfo } from "../types/proposal";
 
 export function useVoter(admin: string | undefined) {
   const { address } = useAccount();
@@ -21,15 +16,16 @@ export function useVoter(admin: string | undefined) {
     },
   }) as { data: VoterInfo };
 
+  console.log("voterInfo");
+  console.log(voterInfo);
+
   const isAdmin = address && admin && address.toLowerCase() === (admin as string).toLowerCase();
-  const isRegistered = voterInfo ? voterInfo[0] : false;
-  const hasVoted = voterInfo ? voterInfo[1] : false;
-  const votedFor = hasVoted && voterInfo ? Number(voterInfo[2]) : -1;
+  const hasVoted = voterInfo ? voterInfo[0] : false;
+  const votedFor = hasVoted && voterInfo ? Number(voterInfo[1]) : -1;
 
   return {
     address,
     isAdmin,
-    isRegistered,
     hasVoted,
     votedFor,
   };

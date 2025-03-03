@@ -5,7 +5,6 @@ interface Proposal {
 
 interface ProposalListProps {
   proposals: Proposal[];
-  isRegistered: boolean;
   hasVoted: boolean;
   votingActive: boolean;
   votedFor: number;
@@ -14,7 +13,6 @@ interface ProposalListProps {
 
 export default function ProposalList({
   proposals,
-  isRegistered,
   hasVoted,
   votingActive,
   votedFor,
@@ -22,7 +20,7 @@ export default function ProposalList({
 }: ProposalListProps) {
   return (
     <div className="mb-8">
-      <h2 className="mb-4 text-xl font-semibold">Proposals</h2>
+      <h2 className="mb-4 text-xl font-semibold">Vote for the Candidate You Chose</h2>
       {proposals && proposals.length > 0 ? (
         <div className="grid gap-4">
           {proposals.map((proposal, index) => (
@@ -38,7 +36,7 @@ export default function ProposalList({
                   <p>Votes: {proposal.voteCount}</p>
                 </div>
                 <div>
-                  {isRegistered && !hasVoted && votingActive && (
+                  {!hasVoted && votingActive && (
                     <button
                       onClick={() => handleVote(index)}
                       disabled={false}

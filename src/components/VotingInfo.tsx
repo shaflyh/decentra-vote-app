@@ -1,4 +1,5 @@
-import { VotingStats } from "../types/proposal";
+import { TotalAddress } from "../config/constants";
+import { VotingStats, VotingTime } from "../types/proposal";
 
 interface VotingInfoProps {
   topic: string;
@@ -6,7 +7,7 @@ interface VotingInfoProps {
   votingStats: VotingStats;
   winnerName: string | null;
   votingActive: boolean;
-  timeLeft: { start: string; end: string };
+  votingTime?: VotingTime;
 }
 
 export default function VotingInfo({
@@ -15,7 +16,7 @@ export default function VotingInfo({
   votingStats,
   winnerName,
   votingActive,
-  timeLeft,
+  votingTime,
 }: VotingInfoProps) {
   return (
     <div className="p-4 mb-8 rounded-lg bg-gray-50">
@@ -28,16 +29,22 @@ export default function VotingInfo({
         <span className="font-medium">Status:</span> {votingActive ? "Active" : "Inactive"}
       </p>
       <p className="mb-1">
-        <span className="font-medium">Start:</span>{" "}
-        {timeLeft.start === "now" ? "Started" : `Starts in ${timeLeft.start}`}
+        <span className="font-medium">Start:</span> {votingTime?.start}
       </p>
       <p className="mb-1">
-        <span className="font-medium">End:</span>{" "}
-        {timeLeft.end === "now" ? "Ended" : `Ends in ${timeLeft.end}`}
+        <span className="font-medium">End:</span> {votingTime?.end}
       </p>
       <p className="mb-1">
-        <span className="font-medium">Registered Voters:</span>{" "}
-        {votingStats ? votingStats[1].toString() : "0"}
+        <span className="font-medium">Time Left:</span> {votingTime?.untilEnd}
+      </p>
+      {votingTime?.untilStart != "0" && (
+        <p className="mb-1">
+          <span className="font-medium">Time to Start:</span> {votingTime?.untilStart}
+        </p>
+      )}
+      <p className="mb-1">
+        <span className="font-medium">Registered Voters: </span>
+        {TotalAddress}
       </p>
       <p className="mb-1">
         <span className="font-medium">Total Votes Cast:</span>{" "}

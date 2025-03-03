@@ -1,14 +1,28 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useReadContract, useWatchContractEvent } from "wagmi";
 import { decodeBytes32String } from "ethers";
 
-import { Proposal, TimeLeft, VotingStats } from "../types/proposal";
+import { Proposal, VotingTime, VotingStats } from "../types/proposal";
 import { DecentraVoteABI, CONTRACT_ADDRESS } from "../config/constants";
+import { logContractRead, logEvent } from "../utils/logger";
+import { formatTimeLeft, formatTimestampWithTimezone } from "../utils/formatter";
 
 export function useVoting() {
   const [_refreshKey, setRefreshKey] = useState(0);
   const [proposals, setProposals] = useState<Proposal[]>([]);
-  const [timeLeft, setTimeLeft] = useState<TimeLeft>({ start: "", end: "" });
+  const [timeLeft, setTimeLeft] = useState<VotingTime>();
+  const logPrefix = "[useVoting]";
+
+  // Create a ref to track first render vs subsequent renders for each contract call
+  const initRenders = useRef({
+    topic: true,
+    admin: true,
+    proposals: true,
+    votingStats: true,
+    winnerName: true,
+    votingActive: true,
+    timeUntilVoting: true,
+  });
 
   // Contract reads
   const {
@@ -21,35 +35,89 @@ export function useVoting() {
     functionName: "topic",
   });
 
-  const { data: admin } = useReadContract({
+  useEffect(() => {
+    logContractRead("topic", topicData, topicError, isTopicLoading, initRenders);
+  }, [topicData, topicError, isTopicLoading]);
+
+  const {
+    data: admin,
+    isLoading: isAdminLoading,
+    error: adminError,
+  } = useReadContract({
     address: CONTRACT_ADDRESS,
     abi: DecentraVoteABI,
     functionName: "admin",
   });
 
-  const { data: proposalData } = useReadContract({
+  useEffect(() => {
+    logContractRead("admin", admin, adminError, isAdminLoading, initRenders);
+  }, [admin, adminError, isAdminLoading]);
+
+  const {
+    data: proposalData,
+    isLoading: isProposalLoading,
+    error: proposalError,
+  } = useReadContract({
     address: CONTRACT_ADDRESS,
     abi: DecentraVoteABI,
     functionName: "getAllProposals",
   });
 
-  const { data: votingStats } = useReadContract({
+  useEffect(() => {
+    logContractRead("proposals", proposalData, proposalError, isProposalLoading, initRenders);
+  }, [proposalData, proposalError, isProposalLoading]);
+
+  const {
+    data: votingStats,
+    isLoading: isStatsLoading,
+    error: statsError,
+  } = useReadContract({
     address: CONTRACT_ADDRESS,
     abi: DecentraVoteABI,
     functionName: "getVotingStats",
-  }) as { data: VotingStats };
+  }) as {
+    data: VotingStats;
+    isLoading: boolean;
+    error: Error | null;
+  };
 
-  const { data: winnerNameData } = useReadContract({
+  useEffect(() => {
+    logContractRead("votingStats", votingStats, statsError, isStatsLoading, initRenders);
+  }, [votingStats, statsError, isStatsLoading]);
+
+  const {
+    data: winnerNameData,
+    isLoading: isWinnerLoading,
+    error: winnerError,
+  } = useReadContract({
     address: CONTRACT_ADDRESS,
     abi: DecentraVoteABI,
     functionName: "winnerName",
   });
 
-  const { data: votingActiveData } = useReadContract({
+  useEffect(() => {
+    logContractRead("winnerName", winnerNameData, winnerError, isWinnerLoading, initRenders);
+  }, [winnerNameData, winnerError, isWinnerLoading]);
+
+  const {
+    data: votingActiveData,
+    isLoading: isVotingActiveLoading,
+    error: votingActiveError,
+  } = useReadContract({
     address: CONTRACT_ADDRESS,
     abi: DecentraVoteABI,
     functionName: "isVotingActive",
   });
+
+  useEffect(() => {
+    logContractRead(
+      "votingActive",
+      votingActiveData,
+      votingActiveError,
+      isVotingActiveLoading,
+      initRenders
+    );
+  }, [votingActiveData, votingActiveError, isVotingActiveLoading]);
 
   const { data: timeUntilVotingStarts } = useReadContract({
     address: CONTRACT_ADDRESS,
@@ -63,6 +131,18 @@ export function useVoting() {
     functionName: "getTimeUntilVotingEnds",
   });
 
+  const { data: votingStartTime } = useReadContract({
+    address: CONTRACT_ADDRESS,
+    abi: DecentraVoteABI,
+    functionName: "votingStartTime",
+  });
+
+  const { data: votingEndTime } = useReadContract({
+    address: CONTRACT_ADDRESS,
+    abi: DecentraVoteABI,
+    functionName: "votingEndTime",
+  });
+
   const votingActive = Boolean(votingActiveData);
 
   // Watch for events to trigger refreshes
@@ -70,27 +150,37 @@ export function useVoting() {
     address: CONTRACT_ADDRESS,
     abi: DecentraVoteABI,
     eventName: "VoterRegistered",
-    onLogs: () => setRefreshKey((prev) => prev + 1),
+    onLogs: (logs) => {
+      logEvent("VoterRegistered", logs);
+      setRefreshKey((prev) => prev + 1);
+    },
   });
 
   useWatchContractEvent({
     address: CONTRACT_ADDRESS,
     abi: DecentraVoteABI,
     eventName: "VoteCasted",
-    onLogs: () => setRefreshKey((prev) => prev + 1),
+    onLogs: (logs) => {
+      logEvent("VoteCasted", logs);
+      setRefreshKey((prev) => prev + 1);
+    },
   });
 
   useWatchContractEvent({
     address: CONTRACT_ADDRESS,
     abi: DecentraVoteABI,
     eventName: "ProposalCreated",
-    onLogs: () => setRefreshKey((prev) => prev + 1),
+    onLogs: (logs) => {
+      logEvent("ProposalCreated", logs);
+      setRefreshKey((prev) => prev + 1);
+    },
   });
 
   // Process proposal data when it changes
   useEffect(() => {
     if (proposalData) {
       try {
+        console.log(`${logPrefix} Processing proposal data...`);
         const [names, voteCounts] = proposalData as [string[], bigint[]];
 
         const processedProposals = names.map((name, index) => ({
@@ -98,9 +188,10 @@ export function useVoting() {
           voteCount: Number(voteCounts[index]),
         }));
 
+        console.log(`${logPrefix} Processed proposals:`, processedProposals);
         setProposals(processedProposals);
       } catch (error) {
-        console.error("Error processing proposal data:", error);
+        console.error(`${logPrefix} Error processing proposal data:`, error);
         setProposals([]);
       }
     }
@@ -108,21 +199,25 @@ export function useVoting() {
 
   // Update time left
   useEffect(() => {
-    if (timeUntilVotingStarts && timeUntilVotingEnds) {
-      const formatTime = (seconds: bigint) => {
-        if (seconds <= 0n) return "now";
-        const days = Number(seconds / 86400n);
-        const hours = Number((seconds % 86400n) / 3600n);
-        const minutes = Number((seconds % 3600n) / 60n);
-        return `${days}d ${hours}h ${minutes}m`;
-      };
+    console.log(`${logPrefix} Updating time left calculations...`);
 
-      setTimeLeft({
-        start: formatTime(timeUntilVotingStarts as bigint),
-        end: formatTime(timeUntilVotingEnds as bigint),
-      });
-    }
-  }, [timeUntilVotingStarts, timeUntilVotingEnds]);
+    const time = {
+      start: formatTimestampWithTimezone(votingStartTime as bigint),
+      end: formatTimestampWithTimezone(votingEndTime as bigint),
+      untilStart: formatTimeLeft(timeUntilVotingStarts as bigint),
+      untilEnd: formatTimeLeft(timeUntilVotingEnds as bigint),
+    };
+
+    console.log(`${logPrefix} Time data:`, time);
+    setTimeLeft(time);
+  }, [timeUntilVotingStarts, timeUntilVotingEnds, votingStartTime, votingEndTime]);
+
+  const refreshData = () => {
+    console.log(`${logPrefix} Manual refresh triggered`);
+    setRefreshKey((prev) => prev + 1);
+  };
+
+  console.log(`${logPrefix} Hook rendered with refreshKey:`, _refreshKey);
 
   return {
     topic: topicData ? decodeBytes32String(topicData as string) : "",
@@ -134,6 +229,6 @@ export function useVoting() {
     winnerName: winnerNameData ? decodeBytes32String(winnerNameData as string) : "",
     votingActive,
     timeLeft,
-    refreshData: () => setRefreshKey((prev) => prev + 1),
+    refreshData,
   };
 }

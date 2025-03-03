@@ -9,7 +9,6 @@ import { useVotingActions } from "./hooks/useVotingActions";
 import VotingInfo from "./components/VotingInfo";
 import ProposalList from "./components/ProposalList";
 import AdminControls from "./components/AdminControls";
-import UserStatus from "./components/UseStatus";
 import VoteStatusInfo from "./components/VoteStatusInfo";
 import VerifyVoter from "./components/VerifyVoter";
 
@@ -28,7 +27,7 @@ export default function App() {
     refreshData,
   } = useVoting();
 
-  const { isAdmin, isRegistered, hasVoted, votedFor } = useVoter(admin as string);
+  const { isAdmin, hasVoted, votedFor } = useVoter(admin as string);
 
   const votingActions = useVotingActions(refreshData);
 
@@ -43,31 +42,27 @@ export default function App() {
           <ConnectButton showBalance={false} />
         </div>
         <VerifyVoter></VerifyVoter>
-        <VoteStatusInfo proposals={proposals} />
+        <div className="flex justify-between w-full gap-x-4">
+          <div className="flex-1">
+            <VoteStatusInfo proposals={proposals} />
+          </div>
+          <div className="flex-1">
+            <VotingInfo
+              topic={topic}
+              isTopicLoading={isTopicLoading}
+              votingStats={votingStats}
+              winnerName={winnerName}
+              votingActive={votingActive}
+              votingTime={timeLeft}
+            />
+          </div>
+        </div>
         {isConnected && (
           <div className="grid grid-cols-1 gap-8 mt-8 lg:grid-cols-2">
-            <div className="flex flex-col gap-6 p-6 rounded-lg shadow bg-gray-50">
-              <VotingInfo
-                topic={topic}
-                isTopicLoading={isTopicLoading}
-                votingStats={votingStats}
-                winnerName={winnerName}
-                votingActive={votingActive}
-                timeLeft={timeLeft}
-              />
-              <UserStatus
-                isAdmin={isAdmin}
-                isRegistered={isRegistered}
-                hasVoted={hasVoted}
-                votedFor={votedFor}
-                proposals={proposals}
-              />
-            </div>
             <div className="flex flex-col gap-6 p-6 rounded-lg shadow bg-gray-50">
               {isAdmin && <AdminControls votingActive={votingActive} {...votingActions} />}
               <ProposalList
                 proposals={proposals}
-                isRegistered={isRegistered}
                 hasVoted={hasVoted}
                 votingActive={votingActive}
                 votedFor={votedFor}
@@ -76,13 +71,6 @@ export default function App() {
             </div>
           </div>
         )}
-        {/* (
-          <div className="flex flex-col items-center justify-center py-10 text-center">
-            <p className="mb-4 text-lg">
-              Please connect your wallet to interact with the DecentraVote contract
-            </p>
-          </div>
-        ) */}
       </div>
     </div>
   );
