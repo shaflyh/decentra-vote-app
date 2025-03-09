@@ -43,9 +43,7 @@ export default function VerifyVoter() {
         isVerified === null ? (
           <p>🔄 Verifying your wallet...</p>
         ) : isVerified ? (
-          <p className="text-green-600">
-            🎉 You're verified! Select your candidate and cast your vote.
-          </p>
+          <p className="text-green-600">Select your candidate and cast your vote.</p>
         ) : (
           <p className="text-red-600">❌ Sorry, your wallet address is not eligible to vote.</p>
         )

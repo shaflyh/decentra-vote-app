@@ -44,13 +44,16 @@ export default function App() {
         </div>
         <VerifyVoter></VerifyVoter>
         <Card>
-          <VoteProposal
-            proposals={proposals}
-            hasVoted={hasVoted}
-            votingActive={votingActive}
-            votedFor={votedFor}
-            handleVote={votingActions.handleVote}
-          />
+          {votingActive ? (
+            <VoteProposal
+              proposals={proposals}
+              hasVoted={hasVoted}
+              votedFor={votedFor}
+              handleVote={votingActions.handleVote}
+            />
+          ) : (
+            <span className="text-red-600">Vote is Not Active</span>
+          )}
         </Card>
         {isAdmin && <AdminControls votingActive={votingActive} {...votingActions} />}
 
@@ -58,7 +61,7 @@ export default function App() {
           <div className="flex-1">
             <Card>
               <VoteStatus proposals={proposals} />
-              {isConnected && votingActions.proof.length > 0 && (
+              {isConnected && votingActions.voterMerkleproof.length > 0 && (
                 <div className="gap-8 mt-8 lg:grid-cols-2">
                   <div className=""></div>
                 </div>

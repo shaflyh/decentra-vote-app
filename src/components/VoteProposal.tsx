@@ -8,7 +8,6 @@ interface Proposal {
 interface ProposalListProps {
   proposals: Proposal[];
   hasVoted: boolean;
-  votingActive: boolean;
   votedFor: number;
   handleVote: (index: number) => void;
 }
@@ -16,7 +15,6 @@ interface ProposalListProps {
 export default function VoteProposal({
   proposals,
   hasVoted,
-  votingActive,
   votedFor,
   handleVote,
 }: ProposalListProps) {
@@ -39,12 +37,12 @@ export default function VoteProposal({
 
   // Determine if the card is clickable
   function isCardClickable() {
-    return !hasVoted && votingActive;
+    return !hasVoted;
   }
 
   return (
     <div className="mb-8">
-      <h2 className="mb-4 text-xl font-semibold ">Select Your Candidate</h2>
+      <h2 className="mb-4 text-xl font-semibold ">Candidate</h2>
 
       {proposals && proposals.length > 0 ? (
         <div className="grid gap-4">
@@ -81,7 +79,7 @@ export default function VoteProposal({
       )}
 
       {/* Single Vote Button at the bottom */}
-      {!hasVoted && votingActive && (
+      {!hasVoted && (
         <button
           className="px-6 py-2 mt-6 text-white bg-blue-600 rounded hover:bg-blue-700 disabled:bg-blue-300 disabled:cursor-not-allowed"
           onClick={() => {

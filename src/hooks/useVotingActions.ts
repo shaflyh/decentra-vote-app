@@ -12,17 +12,13 @@ export function useVotingActions(onSuccess: () => void) {
   const [selectedProposal, setSelectedProposal] = useState(0);
 
   const lowerCaseAddress = address?.toLowerCase();
-  const proof: string[] = merkleDataProofs[lowerCaseAddress || ""] ?? [];
+  const voterMerkleproof: string[] = merkleDataProofs[lowerCaseAddress || ""] ?? [];
 
   // Contract write state
   const { writeContract, isPending: writeLoading, data: writeData } = useWriteContract();
-
   // Transaction state
-  const { isSuccess: txSuccess } = useTransaction({
-    hash: writeData,
-  });
+  const { isSuccess: txSuccess } = useTransaction({ hash: writeData });
 
-  // Handle success effects
   useEffect(() => {
     if (txSuccess) {
       toast.success("Transaction successful!");
@@ -31,10 +27,20 @@ export function useVotingActions(onSuccess: () => void) {
     }
   }, [txSuccess, onSuccess]);
 
-  // Handle add proposal
+  const handleVote = (proposalIndex: number) => {
+    console.log("Send the vote");
+    setSelectedProposal(proposalIndex);
+    writeContract({
+      address: CONTRACT_ADDRESS,
+      abi: DecentraVoteABI,
+      functionName: "castVote",
+      args: [BigInt(proposalIndex), voterMerkleproof],
+    });
+  };
+
+  // --- Admin Actions ---
   const handleAddProposal = () => {
     if (!newProposalName) return toast.error("Please enter a proposal name");
-
     writeContract({
       address: CONTRACT_ADDRESS,
       abi: DecentraVoteABI,
@@ -43,15 +49,59 @@ export function useVotingActions(onSuccess: () => void) {
     });
   };
 
-  // Handle vote
-  const handleVote = (proposalIndex: number) => {
-    console.log("Send the vote");
-    setSelectedProposal(proposalIndex);
+  const handleFinalizeVoting = () => {
     writeContract({
       address: CONTRACT_ADDRESS,
       abi: DecentraVoteABI,
-      functionName: "castVote",
-      args: [BigInt(proposalIndex), proof],
+      functionName: "finalizeVoting",
+      args: [],
+    });
+  };
+
+  const handlePauseVoting = () => {
+    writeContract({
+      address: CONTRACT_ADDRESS,
+      abi: DecentraVoteABI,
+      functionName: "pause",
+      args: [],
+    });
+  };
+
+  const handleUnpauseVoting = () => {
+    writeContract({
+      address: CONTRACT_ADDRESS,
+      abi: DecentraVoteABI,
+      functionName: "unpause",
+      args: [],
+    });
+  };
+
+  const handleUpdateMerkleRoot = (newRoot: string) => {
+    if (!newRoot) return toast.error("Please enter a new Merkle root");
+    writeContract({
+      address: CONTRACT_ADDRESS,
+      abi: DecentraVoteABI,
+      functionName: "updateMerkleRoot",
+      args: [encodeBytes32String(newRoot)],
+    });
+  };
+
+  const handleUpdateProposalName = (index: number, newName: string) => {
+    if (!newName) return toast.error("Please enter a new proposal name");
+    writeContract({
+      address: CONTRACT_ADDRESS,
+      abi: DecentraVoteABI,
+      functionName: "updateProposalName",
+      args: [index, encodeBytes32String(newName)],
+    });
+  };
+
+  const handleRemoveProposal = (index: number) => {
+    writeContract({
+      address: CONTRACT_ADDRESS,
+      abi: DecentraVoteABI,
+      functionName: "removeProposal",
+      args: [index],
     });
   };
 
@@ -62,6 +112,12 @@ export function useVotingActions(onSuccess: () => void) {
     writeLoading,
     handleAddProposal,
     handleVote,
-    proof,
+    voterMerkleproof,
+    handleFinalizeVoting,
+    handlePauseVoting,
+    handleUnpauseVoting,
+    handleUpdateMerkleRoot,
+    handleUpdateProposalName,
+    handleRemoveProposal,
   };
 }

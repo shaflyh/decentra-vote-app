@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { useReadContract, useWatchContractEvent } from "wagmi";
 import { decodeBytes32String } from "ethers";
 
@@ -149,16 +149,6 @@ export function useVoting() {
   useWatchContractEvent({
     address: CONTRACT_ADDRESS,
     abi: DecentraVoteABI,
-    eventName: "VoterRegistered",
-    onLogs: (logs) => {
-      logEvent("VoterRegistered", logs);
-      setRefreshKey((prev) => prev + 1);
-    },
-  });
-
-  useWatchContractEvent({
-    address: CONTRACT_ADDRESS,
-    abi: DecentraVoteABI,
     eventName: "VoteCasted",
     onLogs: (logs) => {
       logEvent("VoteCasted", logs);
@@ -172,6 +162,36 @@ export function useVoting() {
     eventName: "ProposalCreated",
     onLogs: (logs) => {
       logEvent("ProposalCreated", logs);
+      setRefreshKey((prev) => prev + 1);
+    },
+  });
+
+  useWatchContractEvent({
+    address: CONTRACT_ADDRESS,
+    abi: DecentraVoteABI,
+    eventName: "ProposalUpdated",
+    onLogs: (logs) => {
+      logEvent("ProposalUpdated", logs);
+      setRefreshKey((prev) => prev + 1);
+    },
+  });
+
+  useWatchContractEvent({
+    address: CONTRACT_ADDRESS,
+    abi: DecentraVoteABI,
+    eventName: "ProposalRemoved",
+    onLogs: (logs) => {
+      logEvent("ProposalRemoved", logs);
+      setRefreshKey((prev) => prev + 1);
+    },
+  });
+
+  useWatchContractEvent({
+    address: CONTRACT_ADDRESS,
+    abi: DecentraVoteABI,
+    eventName: "VotingFinalized",
+    onLogs: (logs) => {
+      logEvent("VotingFinalized", logs);
       setRefreshKey((prev) => prev + 1);
     },
   });
@@ -212,10 +232,10 @@ export function useVoting() {
     setTimeLeft(time);
   }, [timeUntilVotingStarts, timeUntilVotingEnds, votingStartTime, votingEndTime]);
 
-  const refreshData = () => {
+  const refreshData = useCallback(() => {
     console.log(`${logPrefix} Manual refresh triggered`);
     setRefreshKey((prev) => prev + 1);
-  };
+  }, []);
 
   console.log(`${logPrefix} Hook rendered with refreshKey:`, _refreshKey);
 
