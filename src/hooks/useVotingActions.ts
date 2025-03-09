@@ -8,7 +8,6 @@ import { DecentraVoteABI, CONTRACT_ADDRESS, merkleDataProofs } from "../config/c
 export function useVotingActions(onSuccess: () => void) {
   const { address } = useAccount();
 
-  const [newVoterAddress, setNewVoterAddress] = useState("");
   const [newProposalName, setNewProposalName] = useState("");
   const [selectedProposal, setSelectedProposal] = useState(0);
 
@@ -27,23 +26,10 @@ export function useVotingActions(onSuccess: () => void) {
   useEffect(() => {
     if (txSuccess) {
       toast.success("Transaction successful!");
-      setNewVoterAddress("");
       setNewProposalName("");
       onSuccess();
     }
   }, [txSuccess, onSuccess]);
-
-  // Handle register voter
-  const handleRegisterVoter = () => {
-    if (!newVoterAddress) return toast.error("Please enter a valid address");
-
-    writeContract({
-      address: CONTRACT_ADDRESS,
-      abi: DecentraVoteABI,
-      functionName: "registerVoter",
-      args: [newVoterAddress],
-    });
-  };
 
   // Handle add proposal
   const handleAddProposal = () => {
@@ -70,13 +56,10 @@ export function useVotingActions(onSuccess: () => void) {
   };
 
   return {
-    newVoterAddress,
-    setNewVoterAddress,
     newProposalName,
     setNewProposalName,
     selectedProposal,
     writeLoading,
-    handleRegisterVoter,
     handleAddProposal,
     handleVote,
     proof,
