@@ -4,22 +4,38 @@
     "address"
   ],
   "tree": [
-    "0x3c6d217ed3c4a6f05f74f82864866c9d619e7f043f45a54ef7f553006de0864a",
+    "0xa892b4ffff00187d8b47301a062149798fc772de1ac5ec581a251aa9462d1bba",
+    "0x4e6f52415d50071820148c6686f0a8c09006e636dcd04f7d0d5ddcbf6e2382a0",
+    "0x387dde43f148f30096684efd581372387a1136b1b7b400e810204d2c6db409c3",
+    "0xedb9d33a8ef1f459553233c36e7fcd5aa38143632732f0ef8f24b729ba882dfd",
+    "0xdb7141e731db5af6c51f16503ca0a4aedd502a6b9c09395f3026419b6c515bc9",
     "0xa92b03d201c31bb8e6479f8e123a9f14fa3f72a61eec1c67ab4584c9d5327907",
-    "0x8d26019d34b4a80c52caf8b4589e02694c6c02ccb2988e341a5a2c4d4151b810"
+    "0x0c0e7f05bd656890603ad8787e1442d947e74fde063953014e4da9ccf780567b"
   ],
   "values": [
     {
       "value": [
         "0xA9e0C87d1697F8ff2Ae805919167fA5F5066C2f8"
       ],
-      "treeIndex": 1
+      "treeIndex": 5
     },
     {
       "value": [
-        "0x8c7233661d94Ad9dC5Bed164bADdb027f035E558"
+        "0xBaC48391d9c6E54E9E59477818d466cA6CBC8D70"
       ],
-      "treeIndex": 2
+      "treeIndex": 6
+    },
+    {
+      "value": [
+        "0x2862F520FB59ADCad8af91294E16FeC00c0981CF"
+      ],
+      "treeIndex": 4
+    },
+    {
+      "value": [
+        "0x9e9a260D73751E9c533ce4e4bda595e7e8DaD212"
+      ],
+      "treeIndex": 3
     }
   ]
 }

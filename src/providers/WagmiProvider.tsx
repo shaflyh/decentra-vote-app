@@ -13,7 +13,9 @@ const config = getDefaultConfig({
   projectId: WALLET_CONNECT_PROJECT_ID,
   chains: [sepolia],
   transports: {
-    [sepolia.id]: http(import.meta.env.VITE_SEPOLIA_RPC_URL),
+    [sepolia.id]: http(
+      "https://blockchain.googleapis.com/v1/projects/decentra-vote/locations/asia-east1/endpoints/ethereum-sepolia/rpc?key=AIzaSyDOyIREBFkPJPrGnsQu7A7ANMquYOSbYQg"
+    ),
   },
 });
 
