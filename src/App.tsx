@@ -7,10 +7,11 @@ import { useVoter } from "./hooks/useVoter";
 import { useVoting } from "./hooks/useVoting";
 import { useVotingActions } from "./hooks/useVotingActions";
 import VotingInfo from "./components/VotingInfo";
-import ProposalList from "./components/ProposalList";
+import VoteProposal from "./components/VoteProposal";
 import AdminControls from "./components/AdminControls";
 import VoteStatus from "./components/VoteStatus";
 import VerifyVoter from "./components/VerifyVoter";
+import { Card } from "./components/Card";
 
 export default function App() {
   const { isConnected } = useAccount();
@@ -32,7 +33,7 @@ export default function App() {
   const votingActions = useVotingActions(refreshData);
 
   return (
-    <div className="flex flex-col w-full min-h-screen p-6 bg-gray-100">
+    <div className="flex flex-col">
       <ToastContainer position="top-right" autoClose={5000} />
 
       <div className="w-full p-8 text-center bg-white rounded-lg shadow-xl">
@@ -42,25 +43,27 @@ export default function App() {
           <ConnectButton showBalance={false} />
         </div>
         <VerifyVoter></VerifyVoter>
+        <Card>
+          <VoteProposal
+            proposals={proposals}
+            hasVoted={hasVoted}
+            votingActive={votingActive}
+            votedFor={votedFor}
+            handleVote={votingActions.handleVote}
+          />
+        </Card>
+        {isAdmin && <AdminControls votingActive={votingActive} {...votingActions} />}
+
         <div className="flex justify-between w-full gap-x-4">
           <div className="flex-1">
-            <div className="max-w-3xl p-6 mx-auto my-8 bg-white border border-blue-100 shadow-md rounded-xl">
+            <Card>
               <VoteStatus proposals={proposals} />
               {isConnected && votingActions.proof.length > 0 && (
                 <div className="gap-8 mt-8 lg:grid-cols-2">
-                  <div className="">
-                    {isAdmin && <AdminControls votingActive={votingActive} {...votingActions} />}
-                    <ProposalList
-                      proposals={proposals}
-                      hasVoted={hasVoted}
-                      votingActive={votingActive}
-                      votedFor={votedFor}
-                      handleVote={votingActions.handleVote}
-                    />
-                  </div>
+                  <div className=""></div>
                 </div>
               )}
-            </div>
+            </Card>
           </div>
           <div className="flex-1">
             <VotingInfo

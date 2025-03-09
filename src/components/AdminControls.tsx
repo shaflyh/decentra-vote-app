@@ -1,3 +1,5 @@
+import { Card } from "./Card";
+
 interface AdminControlsProps {
   votingActive: boolean;
   newVoterAddress: string;
@@ -20,7 +22,7 @@ export default function AdminControls({
   handleAddProposal,
 }: AdminControlsProps) {
   return (
-    <div className="p-4 mb-8 border border-blue-200 rounded-lg bg-blue-50">
+    <Card>
       <h2 className="mb-4 text-xl font-semibold">Admin Controls</h2>
 
       <div className="mb-4">
@@ -65,6 +67,6 @@ export default function AdminControls({
           <p className="mt-1 text-sm text-red-500">Cannot add proposals after voting has started</p>
         )}
       </div>
-    </div>
+    </Card>
   );
 }

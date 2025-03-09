@@ -13,7 +13,7 @@ interface ProposalListProps {
   handleVote: (index: number) => void;
 }
 
-export default function ProposalList({
+export default function VoteProposal({
   proposals,
   hasVoted,
   votingActive,

@@ -1,6 +1,8 @@
 import { TotalAddress } from "../config/constants";
 import { VotingStats, VotingTime } from "../types/proposal";
 
+import { Card } from "./Card";
+
 interface VotingInfoProps {
   topic: string;
   isTopicLoading: boolean;
@@ -17,7 +19,7 @@ export default function VotingInfo({
   votingTime,
 }: VotingInfoProps) {
   return (
-    <div className="max-w-3xl p-6 mx-auto my-8 bg-white border border-blue-100 shadow-md rounded-xl">
+    <Card>
       {/* Header */}
       <div className="flex flex-col mb-6 sm:items-center sm:justify-between">
         <div>
@@ -81,6 +83,6 @@ export default function VotingInfo({
           </div>
         )}
       </div>
-    </div>
+    </Card>
   );
 }
