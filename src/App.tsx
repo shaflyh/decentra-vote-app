@@ -57,7 +57,7 @@ export default function App() {
               Voting is finished and the winner is {winnerName} 🎉 · 🥳{" "}
             </span>
           ) : (
-            <span className="text-red-600">Vote is Not Active</span>
+            <span className="text-red-600">Voting is Not Active</span>
           )}
         </Card>
         {isAdmin && <AdminControls votingActive={votingActive} {...votingActions} />}

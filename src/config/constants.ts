@@ -4,7 +4,7 @@ import contract from "./DecentraVote.json";
 import merkleData from "./merkle-data.json";
 
 export const DecentraVoteABI = contract.abi;
-export const CONTRACT_ADDRESS = "0x6b67F54EFE9a9F4B996aA69FD6417E086Af702d7";
+export const CONTRACT_ADDRESS = "0x6F82c938c859137cD6442d51DA8390c40a7Ee6E1";
 
 export const TotalAddress = merkleData.totalAddresses;
 
