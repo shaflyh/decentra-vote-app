@@ -13,7 +13,7 @@ const config = getDefaultConfig({
   projectId: WALLET_CONNECT_PROJECT_ID,
   chains: [sepolia],
   transports: {
-    [sepolia.id]: http("https://eth-sepolia.g.alchemy.com/v2/qpUwEqZco5CjKPiDYYaaOCamsyd45fxA"),
+    [sepolia.id]: http(import.meta.env.VITE_SEPOLIA_RPC_URL),
   },
 });
 

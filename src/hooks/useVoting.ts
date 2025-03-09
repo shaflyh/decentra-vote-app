@@ -119,6 +119,26 @@ export function useVoting() {
     );
   }, [votingActiveData, votingActiveError, isVotingActiveLoading]);
 
+  const {
+    data: votingFinalizedData,
+    isLoading: votingFinalizedLoading,
+    error: votingFinalizedError,
+  } = useReadContract({
+    address: CONTRACT_ADDRESS,
+    abi: DecentraVoteABI,
+    functionName: "votingFinalized",
+  });
+
+  useEffect(() => {
+    logContractRead(
+      "votingActive",
+      votingFinalizedData,
+      votingFinalizedError,
+      votingFinalizedLoading,
+      initRenders
+    );
+  }, [votingFinalizedData, votingFinalizedError, votingFinalizedLoading]);
+
   const { data: timeUntilVotingStarts } = useReadContract({
     address: CONTRACT_ADDRESS,
     abi: DecentraVoteABI,
@@ -144,6 +164,8 @@ export function useVoting() {
   });
 
   const votingActive = Boolean(votingActiveData);
+
+  const isVotingFinalized = Boolean(votingFinalizedData);
 
   // Watch for events to trigger refreshes
   useWatchContractEvent({
@@ -248,6 +270,7 @@ export function useVoting() {
     votingStats,
     winnerName: winnerNameData ? decodeBytes32String(winnerNameData as string) : "",
     votingActive,
+    isVotingFinalized,
     timeLeft,
     refreshData,
   };

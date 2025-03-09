@@ -24,6 +24,7 @@ export default function App() {
     votingStats,
     winnerName,
     votingActive,
+    isVotingFinalized,
     timeLeft,
     refreshData,
   } = useVoting();
@@ -51,6 +52,10 @@ export default function App() {
               votedFor={votedFor}
               handleVote={votingActions.handleVote}
             />
+          ) : isVotingFinalized ? (
+            <span className="font-medium text-green-600">
+              Voting is finished and the winner is {winnerName} 🎉 · 🥳{" "}
+            </span>
           ) : (
             <span className="text-red-600">Vote is Not Active</span>
           )}
